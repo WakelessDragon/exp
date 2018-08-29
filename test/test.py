@@ -1,3 +1,4 @@
 from exp import run
 
-print(run('!(a.b.0.c > 110)', {'a': {'b': [{'c': '12'}]}}))
+env = {'a': {'b': [{'c': '2'}]}}
+print(run('a.b.0.c == (1+(2*(4/4))-1) & (!(1>2))', env))

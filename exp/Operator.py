@@ -37,7 +37,11 @@ class Equal(BinaryOperator):
         return '=='
 
     def apply(self, left, right):
-        return str(left) == str(right)
+        try:
+            return float(left) == float(right)
+        except ValueError:
+            return str(left) == str(right)
+
 
 
 class And(BinaryOperator):
