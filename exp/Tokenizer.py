@@ -5,7 +5,7 @@ class Tokenizer:
         self.all_operator = all_operator
 
     def __op_start_idx(self, ce):
-        for c in ['(', ')']:
+        for c in ['(', ')', '{', '}']:
             idx = ce.find(c[0])
             if idx != -1:
                 return c, idx
@@ -15,7 +15,7 @@ class Tokenizer:
                 return op.mark, idx
 
     def __op_idx(self, ce, oi):
-        for c in ['(', ')']:
+        for c in ['(', ')', '{', '}']:
             if c == ce or c.startswith(oi[0]):
                 return c, oi[1]
         for op in self.all_operator:

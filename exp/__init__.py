@@ -7,3 +7,9 @@ def run(exp, env):
     ao = get_all_operator(env)
     tokens = Tokenizer(ao).tokenizer(exp)
     return AST(ao, tokens).eval(env)
+
+
+def get_ast(exp, env):
+    ao = get_all_operator(env)
+    tokens = Tokenizer(ao).tokenizer(exp)
+    return AST(ao, tokens)

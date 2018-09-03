@@ -7,9 +7,16 @@ class AST:
         self.all_operator = all_operator
         self.depth = depth
         self.tks = tokens
-        if tokens[-1] == ')':
-            left_bracket_idx = self.__find_matched_left(tokens, len(tokens)-1, '(')
-            assert left_bracket_idx is not None, 'un binate bracket'
+        if tokens[-1] == ')' or tokens[-1] == '}':
+            right_pair = tokens[-1]
+            if right_pair == ')':
+                left_pair = '('
+            elif right_pair == '}':
+                left_pair = '{'
+            else:
+                raise ValueError('invalid token ' + right_pair)
+            left_bracket_idx = self.__find_matched_left(tokens, len(tokens)-1, left_pair)
+            assert left_bracket_idx is not None, 'un pair bracket'
             tokens_before_bracket = tokens[:left_bracket_idx]
             oik_before_bracket = self.__op_idx_tk(tokens_before_bracket)
             if oik_before_bracket is not None:
@@ -20,7 +27,14 @@ class AST:
                 self.right = AST(all_operator, tokens[left_bracket_idx:], depth+1)
             else:
                 tokens_in_bracket = tokens[1:-1]
-                self.__init__(all_operator, tokens_in_bracket, depth)
+                if right_pair == ')':
+                    self.__init__(all_operator, tokens_in_bracket, depth)
+                elif right_pair == '}':
+                    self.tks = tokens_in_bracket
+                    self.is_basal = True
+                    self.operator = None
+                    self.left = None
+                    self.right = None
         else:
             oik = self.__op_idx_tk(tokens)
             if oik is not None:
@@ -56,7 +70,7 @@ class AST:
 
     def eval(self, env):
         if self.is_basal:
-            key = self.tks[0]
+            key = ''.join(self.tks)
             return env.get(key, key)
         else:
             if isinstance(self.operator, UnaryOperator):
