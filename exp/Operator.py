@@ -41,6 +41,8 @@ class Equal(BinaryOperator):
             return float(left) == float(right)
         except ValueError:
             return str(left) == str(right)
+        except TypeError:
+            return str(left) == str(right)
 
 
 
