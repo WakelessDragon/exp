@@ -28,7 +28,7 @@ class AST:
                 self.operator = oik_before_bracket[0]
                 if oik_before_bracket[1] != 0:
                     self.left = AST(all_operator, tokens_before_bracket[0:oik_before_bracket[1]], depth + 1)
-                self.right = AST(all_operator, tokens[left_bracket_idx:], depth + 1)
+                self.right = AST(all_operator, tokens[oik_before_bracket[1]+1:], depth + 1)
             else:
                 tokens_in_bracket = tokens[1:-1]
                 if right_pair == ')':
