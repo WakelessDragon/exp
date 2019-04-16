@@ -23,8 +23,8 @@ class Tokenizer:
                 return op.mark, oi[1]
             elif op.mark.startswith(oi[0]):
                 hit_mark = ce[0: len(op.mark)]
-                assert hit_mark == op.mark, 'invalid character [%s]' % hit_mark
-                return op.mark, oi[1]
+                if hit_mark == op.mark:
+                    return op.mark, oi[1]
 
     def tokenizer(self, exp):
         tokens = []
@@ -46,9 +46,13 @@ class Tokenizer:
                     tokens.append(tk0)
                 ce_ex = exp[i: i+2]
                 oi_ex = self.__op_idx(ce_ex, oi)
-                tk1 = oi_ex[0]
-                tokens.append(tk1)
-                i = i+len(oi_ex[0])
+                if oi_ex is None:
+                    not_op.append(ce)
+                    i = i+len(ce)
+                else:
+                    tk1 = oi_ex[0]
+                    tokens.append(tk1)
+                    i = i+len(oi_ex[0])
         if len(not_op) > 0:
             tokens.append(''.join(not_op))
         return tokens
