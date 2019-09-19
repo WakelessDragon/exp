@@ -38,6 +38,10 @@ class UnaryOperator:
         return self.mark
 
 
+class LeftEvalBinaryOperator(BinaryOperator):
+    pass
+
+
 class Equal(BinaryOperator):
 
     @property
@@ -202,7 +206,7 @@ class Mode(BinaryOperator):
         return int(left) % int(right)
 
 
-class Access(BinaryOperator):
+class Access(LeftEvalBinaryOperator):
 
     @property
     def mark(self):

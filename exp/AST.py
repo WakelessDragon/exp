@@ -1,6 +1,6 @@
 from typing import Union
 
-from exp.Operator import UnaryOperator, BinaryOperator, get_all_operator
+from exp.Operator import UnaryOperator, BinaryOperator, LeftEvalBinaryOperator
 
 
 class AST:
@@ -98,9 +98,13 @@ class AST:
                 right_eval = self.right.eval(env)
                 return self.operator.apply(right_eval)
             elif isinstance(self.operator, BinaryOperator):
-                left_eval = self.left.eval(env)
-                right_eval = self.right.eval(env)
-                return self.operator.apply(left_eval, right_eval)
+                if isinstance(self.operator, LeftEvalBinaryOperator):
+                    left_eval = self.left.eval(env)
+                    return self.operator.apply(left_eval, self.right.tks[0])
+                else:
+                    left_eval = self.left.eval(env)
+                    right_eval = self.right.eval(env)
+                    return self.operator.apply(left_eval, right_eval)
 
     def __str__(self):
         pad = ''.ljust(self.depth * 4)
